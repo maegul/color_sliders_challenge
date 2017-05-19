@@ -1,0 +1,114 @@
+<html>
+<head>
+	<title>Color Sliders</title>
+
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+
+</head>
+
+
+
+<body>
+
+
+
+	<div class='col_main'>
+
+	</div>
+
+
+	<div class='slid_cont'>
+
+		<span>Red</span>
+		<input id='red_slider' type='range' min=0 max=255 step=1 value=0>
+
+	</div>
+
+
+
+
+<script type="text/javascript">
+
+var d3 = Plotly.d3;
+
+////////
+// First step of interactivity - pull the HTML element into javascript land
+
+var col_main = d3.select('.col_main')
+
+var red_slider = d3.select('#red_slider')
+
+
+
+// Make an object to store the color of .col_main at any time
+// Uses Separate Red, Green and Blue values to define colors in the RGB format
+
+var main_color = {
+	r: 0, 
+	g: 0, 
+	b: 0
+}
+
+
+// Make a function that will be useful for changing colors
+
+function make_color(rgb_vals){
+
+	// Function for taking raw RGB values and putting them together
+	// to form a single color string for us
+
+	// We use a d3 function to help us
+
+	// d3.rgb() - takes RGB values, and lets us use d3.rgb().toString() to make a single string
+	var col_string = d3.rgb(rgb_vals['r'], rgb_vals['g'], rgb_vals['b'])
+						.toString() // this is a function of d3.rgb(). Converts the values to a single string
+
+	return col_string
+}
+
+
+
+// Using the D3 style function to initialise our colored div
+
+col_main
+	.style('background-color', make_color(main_color))
+	// .style('border', '1px solid black')
+	.style('border-width', '1px')
+	.style('border-color', 'black')
+	.style('border-style', 'solid')
+	.style('height', '300px')
+	.style('width', '300px')
+
+
+
+///////////
+// Second Step of interactivity - add event listeners
+
+
+// Event listener for the Red Slider
+
+// Note the event that gets triggered is not "click" or "mouseover"
+// For sliders, two kinds of event are useful - "input" and "change"
+
+red_slider.on('input', function(){
+
+	// What's "this"?  
+	// It's a variable built into every event listener.  Console.log() it to see what it is
+	console.log(this.value)
+
+	main_color['r'] = this.value;
+
+	//////////
+	// Third step of interactivity - change something when event listener is triggered
+
+	col_main.style('background-color', make_color(main_color))
+})
+
+
+
+
+</script>
+
+</body>
+</html>
